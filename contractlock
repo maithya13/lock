@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Lock {
+    // State variable to track whether the contract is locked
+    bool private isLocked;
+
+    // Event to signal the contract has been locked
+    event Locked(address indexed by);
+
+    // Modifier to ensure functions are callable only when unlocked
+    modifier notLocked() {
+        require(!isLocked, "Contract is locked");
+        _;
+    }
+
+    // Function to lock the contract
+    function lock() external notLocked {
+        isLocked = true; // Lock the contract
+        emit Locked(msg.sender); // Emit event
+    }
+
+    // Example function that can be locked (optional)
+    function exampleFunction() external view notLocked returns (string memory) {
+        return "This contract is unlocked.";
+    }
+}
